@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Login</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Staff Login</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message error">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="password">Enter Staff Password:</label>
+        <input type="password" name="password" required>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

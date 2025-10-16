@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Who is Coming</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div style="margin-bottom:12px;">
+        <button type="button" onclick="history.back()">← Back</button>
+    </div>
+    <h2>Who is Coming</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="GET" style="margin-bottom:12px;">
+        <label for="event_id">Event:</label>
+        <select name="event_id" onchange="this.form.submit()">
+            {% for ev in events %}
+                <option value="{{ ev.id }}" {% if sel_event and sel_event.id==ev.id %}selected{% endif %}>{{ ev.name }} — {{ ev.date }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    {% if sel_event %}
+        <p><a href="/export_attendance?event_id={{ sel_event.id }}">Export attendance as CSV</a></p>
+    {% endif %}
+
+    <table border="1" cellpadding="6">
+        <tr><th>Name</th><th>Rank</th><th>Status</th><th>Override</th></tr>
+        {% for row in cadet_rows %}
+        <tr>
+            <td>{{ row.cadet.name }}</td>
+            <td>{{ row.cadet.rank or '' }}</td>
+            <td>
+                {% if row.status == 'excused' %}
+                    <span style="color:red">Excused</span>
+                {% elif row.status == 'pending' %}
+                    <span style="color:orange">Pending</span>
+                {% else %}
+                    <span style="color:green">Present</span>
+                {% endif %}
+            </td>
+            <td>
+                <form method="POST" style="display:inline-block;">
+                    <input type="hidden" name="override_action" value="update">
+                    <input type="hidden" name="cadet_id" value="{{ row.cadet.id }}">
+                    <input type="hidden" name="event_id" value="{{ sel_event.id if sel_event else '' }}">
+                    <select name="status">
+                        <option value="present">Present</option>
+                        <option value="pending">Pending</option>
+                        <option value="excused">Excused</option>
+                        <option value="unknown">Unknown</option>
+                    </select>
+                    <button type="submit">Save</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="/roster">Manage roster</a> | <a href="/export_roster">Export CSV</a></p>
+</body>
+</html>

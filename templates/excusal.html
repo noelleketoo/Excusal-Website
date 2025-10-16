@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Excusal Request Form</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2 style="text-align:center;">
+        {% if excusal %}
+            Edit Excusal Request
+        {% else %}
+            Excusal Request Form
+        {% endif %}
+    </h2>
+    
+    <div class="nav-links">
+        <a href="/">🏠 Home</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="form-container" role="img" aria-label="Excusal form image background">
+            <img src="/static/excusal_form.png" alt="excusal form image">
+
+            <!-- Overlay input fields -->
+            <input id="date" name="date" class="input-field" type="date" value="{{ excusal.date if excusal else '' }}" required>
+            <input id="cpt" name="cpt" class="input-field" type="text" placeholder="c/CPT" value="{{ excusal.cpt if excusal else '' }}" required>
+            <input id="company" name="company" class="input-field" type="text" placeholder="Company" value="{{ excusal.company if excusal else '' }}" required>
+
+            {% if events %}
+                <select id="excused_from" name="excused_from" class="input-field" required>
+                    <option value="">Select event to be excused from</option>
+                    {% for ev in events %}
+                        <option value="{{ ev.name }}" {{ 'selected' if excusal and excusal.excused_from == ev.name else '' }}>{{ ev.name }} — {{ ev.date }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <input id="excused_from" name="excused_from" class="input-field" type="text" placeholder="Excused from" value="{{ excusal.excused_from if excusal else '' }}" required>
+            {% endif %}
+            <input id="reason" name="reason" class="input-field" type="text" placeholder="Reason" value="{{ excusal.reason if excusal else '' }}" required>
+            <input id="makeup_plan" name="makeup_plan" class="input-field" type="text" placeholder="Makeup Plan" value="{{ excusal.makeup_plan if excusal else '' }}">
+            <input id="poc" name="poc" class="input-field" type="text" placeholder="Point of Contact" value="{{ excusal.poc if excusal else '' }}">
+
+            <input id="name" name="name" class="input-field" type="text" placeholder="Name" value="{{ excusal.name if excusal else '' }}" required>
+            <input id="position" name="position" class="input-field" type="text" placeholder="Position" value="{{ excusal.position if excusal else '' }}" required>
+        </div>
+
+        <br>
+        <div style="text-align:center;">
+            <button type="submit">
+                {% if excusal %}
+                    Update Excusal
+                {% else %}
+                    Submit Excusal
+                {% endif %}
+            </button>
+        </div>
+    </form>
+
+    <script>
+        // Autofill date with today's date if empty
+        (function(){
+            const d = document.getElementById('date');
+            if(d && !d.value){
+                const today = new Date().toISOString().slice(0,10);
+                d.value = today;
+            }
+        })();
+    </script>
+</body>
+</html>

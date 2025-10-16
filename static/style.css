@@ -1,0 +1,185 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #27ae60;
+}
+
+/* Form styling */
+form {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+}
+
+button:hover {
+    background-color: #219a52;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin: 20px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #34495e;
+    color: white;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Navigation links */
+.nav-links {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-links a {
+    color: #3498db;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.nav-links a:hover {
+    background-color: #ecf0f1;
+}
+
+/* Flash messages */
+.flash-messages {
+    margin: 20px 0;
+}
+
+.flash-messages li, .flash-message {
+    list-style: none;
+    padding: 12px 16px;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.flash-messages li.error, .flash-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-color: #f5c6cb;
+}
+
+.flash-messages li.warning, .flash-message.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+}
+
+/* Form container for excusal form */
+.form-container {
+    position: relative;
+    width: 800px;  /* base width; container will scale */
+    max-width: 95vw;
+    margin: 0 auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.form-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Inputs positioned using percentages so they scale with container */
+.input-field {
+    position: absolute;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.85);
+    font-size: 1rem;
+    background: rgba(255,255,255,0.4);
+    padding: 2px 4px;
+    transform: translateY(-50%);
+    box-sizing: border-box;
+    border-radius: 3px;
+}
+
+/* Style select dropdown to match text inputs */
+select.input-field {
+    background: rgba(255,255,255,0.5);
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+/* Percentage positions - adjusted to match official form layout */
+#date { top: 15.5%; left: 65%; width: 18%; }
+#cpt { top: 15.5%; left: 28%; width: 12%; }
+#company { top: 15.5%; left: 44%; width: 15%; }
+
+#event { top: 28.5%; left: 18%; width: 58%; }
+#excused_from { top: 38%; left: 18%; width: 58%; }
+#reason { top: 43.5%; left: 18%; width: 58%; }
+#makeup_plan { top: 49%; left: 18%; width: 58%; }
+#poc { top: 56%; left: 18%; width: 58%; }
+
+#name { top: 64%; left: 62%; width: 28%; }
+#position { top: 68%; left: 62%; width: 28%; }
+
+.input-field:focus {
+    outline: 2px solid rgba(52, 152, 219, 0.5);
+    background: rgba(255,255,255,0.7);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .input-field { font-size: 0.9rem; }
+    body { padding: 10px; }
+}

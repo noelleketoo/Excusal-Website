@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Roster Management</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Roster</h2>
+    
+    <div class="nav-links">
+        <a href="/staff-dashboard">Dashboard</a>
+        <a href="/export_roster">Export CSV</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <h3>Add Cadet</h3>
+    <form method="POST">
+        <input type="hidden" name="action" value="add">
+        <label>Name: <input name="name" required></label>
+        <button type="submit">Add</button>
+    </form>
+
+    <h3>Existing Cadets ({{ cadets|length }})</h3>
+    <div class="cadet-list">
+        {% for c in cadets %}
+        <div class="cadet-item">
+            <span class="cadet-name">{{ c.name }}</span>
+            {% if c.status and c.status != 'present' %}
+                <span class="cadet-status">({{ c.status }})</span>
+            {% endif %}
+            <form method="POST" style="display:inline-block; margin-left: auto;" onsubmit="return confirmDelete('{{ c.name }}')">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="cadet_id" value="{{ c.id }}">
+                <button type="submit" class="remove-btn" title="Remove {{ c.name }}">×</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+
+    <style>
+    .info-note {
+        background: #e8f4f8;
+        border: 1px solid #bee5eb;
+        border-radius: 6px;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 13px;
+        color: #0c5460;
+    }
+    
+    .cadet-list {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin: 20px 0;
+        max-height: 500px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 15px;
+        background: white;
+        border-radius: 8px;
+    }
+    
+    .cadet-item {
+        display: flex;
+        align-items: center;
+        background: #f8f9fa;
+        padding: 8px 15px;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+        font-size: 14px;
+    }
+    
+    .cadet-item:hover {
+        background: #e9ecef;
+    }
+    
+    .cadet-name {
+        font-weight: 500;
+        color: #2c3e50;
+        flex-grow: 1;
+    }
+    
+    .cadet-status {
+        color: #e74c3c;
+        font-size: 12px;
+        margin-right: 10px;
+        font-style: italic;
+    }
+    
+    .remove-btn {
+        background: #e74c3c;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 16px;
+        height: 16px;
+        font-size: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s;
+        font-family: monospace;
+    }
+    
+    .remove-btn:hover {
+        background: #c0392b;
+        transform: scale(1.1);
+    }
+    </style>
+
+    <h3>Reload from CSV</h3>
+    <form method="POST">
+        <input type="hidden" name="action" value="reload_csv">
+        <button type="submit" onclick="return confirm('This will add any new names from roster.csv to the database. Continue?')">Reload Names from roster.csv</button>
+    </form>
+
+    <script>
+    function confirmDelete(name) {
+        return confirm('Are you sure you want to remove ' + name + ' from the roster?');
+    }
+    </script>
+
+</body>
+</html>

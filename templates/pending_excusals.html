@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pending Excusals</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+    .nav-links { margin-bottom: 16px; }
+    .excusal-list { display:flex; flex-direction:column; gap:20px; margin:20px 0; }
+    .excusal-item { background:white; border:1px solid #ddd; border-radius:8px; padding:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); }
+    .excusal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px; }
+    .status-badge.pending { background:#fff3cd; color:#856404; border:1px solid #ffeaa7; padding:4px 12px; border-radius:20px; font-weight:bold; text-transform:uppercase; }
+    .excusal-actions { display:flex; gap:10px; justify-content:flex-end; }
+    .edit-btn { background:#3498db; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer }
+    .submit-btn { background:#27ae60; color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer }
+    .no-excusals { text-align:center; padding:40px; background:white; border-radius:8px; margin:20px 0; }
+    </style>
+</head>
+<body>
+    <div class="nav-links">
+        <a href="/">Home</a> |
+        <a href="/excusal">Submit New Excusal</a> |
+    </div>
+
+    <div style="margin-bottom:12px;">
+        <a href="/staff-dashboard">← Back to Staff Dashboard</a>
+    </div>
+
+        <h2>📋 Pending Excusals</h2>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Student view: do not list all pending excusals. Show a simple call-to-action to submit another. -->
+        <div class="no-excusals">
+                <p>If you just submitted an excusal, staff will review it. You can submit another below.</p>
+                <a href="/excusal" class="btn">Submit another excusal</a>
+        </div>
+
+    <script>
+    function submitExcusal(id) {
+        if (confirm('Are you sure you want to submit this excusal? Once submitted, you cannot edit it further.')) {
+            // example: POST to a submit endpoint (not implemented)
+            // fetch(`/submit_excusal/${id}`, { method: 'POST' }).then(()=>location.reload());
+            alert('Excusal ' + id + ' Submitted for staff approval!');
+        }
+    }
+    </script>
+
+</body>
+</html>

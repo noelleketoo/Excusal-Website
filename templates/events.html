@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Events</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div style="margin-bottom:12px;">
+    <button type="button" onclick="history.back()">← Back</button>
+  </div>
+  <h2>Events</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <h3>Add Event</h3>
+    <form method="POST">
+        <label>Name: <input name="name" required></label>
+        <label>Date: <input type="date" name="date" required value="{{ today }}"></label>
+        <button type="submit">Add</button>
+    </form>
+
+    <h3>All Events</h3>
+    <table border="1" cellpadding="6">
+        <tr><th>Date</th><th>Name</th></tr>
+        {% for e in events %}
+        <tr>
+            <td>{{ e.date }}</td>
+            <td>{{ e.name }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <p><a href="/excusal">Back to excusal form</a></p>
+</body>
+</html>

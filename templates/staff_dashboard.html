@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h2>Staff Dashboard</h2>
+    
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    
+    <div class="nav-links">
+        <h3>Staff Navigation:</h3>
+        <a href="/roster">Manage Roster</a> | 
+        <a href="/events">Events</a> |
+        <a href="/whoiscoming">Who is Coming</a> |
+        <a href="/logout">Logout</a>
+    </div>
+
+    <h3>Pending excusals by event</h3>
+    {% if events_map %}
+        {% for event, excs in events_map.items() %}
+            <div style="border:1px solid #ccc; padding:10px; margin-bottom:8px;">
+                <h4>{{ event }}</h4>
+                {% for e in excs %}
+                    <div style="border:1px solid #eee; padding:8px; margin:6px 0; background:#fafafa;">
+                        <strong>{{ e.name }}</strong> — <em>{{ e.date }}</em>
+                        <p><strong>CPT:</strong> {{ e.cpt or '—' }} &nbsp; <strong>Company:</strong> {{ e.company or '—' }}</p>
+                        <p><strong>Excused From / Event:</strong> {{ e.excused_from or e.event or '—' }}</p>
+                        <p><strong>Reason:</strong> {{ e.reason or '—' }}</p>
+                        {% if e.makeup_plan %}<p><strong>Makeup Plan:</strong> {{ e.makeup_plan }}</p>{% endif %}
+                        {% if e.poc %}<p><strong>Point of Contact:</strong> {{ e.poc }}</p>{% endif %}
+                        {% if e.position %}<p><strong>Position:</strong> {{ e.position }}</p>{% endif %}
+                        <form method="POST" style="display:inline-block; margin-top:8px;">
+                            <input type="hidden" name="excusal_id" value="{{ e.id }}">
+                            <button name="action" value="approve" type="submit">Approve</button>
+                            <button name="action" value="deny" type="submit">Deny</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No pending excusals.</p>
+    {% endif %}
+</body>
+</html>
