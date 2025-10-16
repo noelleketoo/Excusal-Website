@@ -9,7 +9,7 @@ from functools import wraps
 
 # database stuff
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rotc.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SECRET_KEY'] = 'supersecretkey'  # required for flash messages + sessions
 db = SQLAlchemy(app)
 
