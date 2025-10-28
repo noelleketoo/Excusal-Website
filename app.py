@@ -76,6 +76,32 @@ def inject_now():
     # make today's date available to templates in YYYY-MM-DD
     return {"today": date.today().isoformat()}
 
+
+# Initialize database tables when the app is imported by a WSGI server.
+# This creates only the tables (no seeding). We only run initialization if
+# a DATABASE_URL is configured to avoid unintentionally creating local files.
+def init_db():
+    db_uri = app.config.get('SQLALCHEMY_DATABASE_URI')
+    if not db_uri:
+        app.logger.warning('DATABASE_URL not set; skipping init_db()')
+        return
+
+    try:
+        with app.app_context():
+            db.create_all()
+            app.logger.info('Database tables ensured (create_all).')
+    except Exception:
+        app.logger.exception('Database initialization failed')
+
+
+# Run DB initialization at import time so WSGI servers (gunicorn) have tables
+# present. If DATABASE_URL is not set, this is a no-op.
+try:
+    init_db()
+except Exception:
+    # init_db logs errors; don't re-raise during import
+    pass
+
 # Staff login
 @app.route("/staff-login", methods=["GET", "POST"])
 def staff_login():
